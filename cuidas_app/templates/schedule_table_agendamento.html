@@ -1,0 +1,32 @@
+<h2>{{ selected_day.date_str() }}</h2>
+<table class="table table-sm">
+	<thead>
+		<tr>
+			<th scope="col">Horário</th>
+			<th scope="col">Nome</th>
+			<th scope="col">Email</th>
+			<th scope="col">Telefone</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for schedule in selected_day.schedules %}
+			{% if schedule.available() %}
+				<tr class="table-success">
+			{% elif schedule.assigned() %}
+				<tr class="table-warning">
+			{% else %}
+				<tr class="table-default">
+			{% endif %}
+				<td class="p-0">{{ schedule.time_str() }}</td>
+				<td class="p-0">{% if schedule.assigned() %} {{ schedule.name }} {% endif %}</td>
+				<td class="p-0">{% if schedule.assigned() %} {{ schedule.email }} {% endif %}</td>
+				<td class="p-0">{% if schedule.assigned() %} {{ schedule.phone }} {% endif %}</td>
+				{% if schedule.available() %}
+					<td class="p-0"><button type="button" class="btn btn-sm btn-success"onclick="Sijax.request('select_schedule', [{{ selected_day.year }}, {{ selected_day.month }}, {{ selected_day.day }}, {{ schedule.hour }}, {{ schedule.minute }}])">Selecionar</button></td>
+				{% else %}					
+					<td class="p-0"><button type="button" class="btn btn-sm btn-light" disabled>Selecionar</button></td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

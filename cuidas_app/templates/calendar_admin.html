@@ -1,0 +1,14 @@
+<td class="p-0">
+	{% if day != 0 %}
+		{% if day_objects[day-1].assigned() %}
+			<button type="button" class="btn btn-warning btn-lg btn-block" onclick="Sijax.request('show_schedules', [{{ year }}, {{ month }}, {{ day }}])">
+		{% elif day_objects[day-1].available() %}
+			<button type="button" class="btn btn-success btn-lg btn-block" onclick="Sijax.request('show_schedules', [{{ year }}, {{ month }}, {{ day }}])">
+		{% else %}
+			<button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="Sijax.request('show_schedules', [{{ year }}, {{ month }}, {{ day }}])">
+		{% endif %}
+			{{ day_objects[day-1].day }}
+		</button>
+	{% endif %}
+</td>
+</script>

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+	<legend class="border-bottom mb-4">Agendamento de Consulta - Escolha de Horário</legend>
+	<p>Nome: {{ name }}</p>
+	<p>Email: {{ email }}</p>
+	<p>Telefone: {{ phone }}</p>
+</div>
+<div id='calendar'>
+	{% include 'calendar.html' %}
+</div>
+<div id='schedules'>
+
+</div>
+{% endblock content %}

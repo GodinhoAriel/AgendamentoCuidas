@@ -1,0 +1,37 @@
+<table class="table table-borderless text-center col-sm-5">
+	<tr>
+		<td class="p-0">
+			{% if is_previous_month_available %}
+			<button type="button" class="btn btn-primary btn-block btn-lg" onclick="Sijax.request('previous', [{{ year }}, {{ month }}])">
+			{% else %}
+			<button type="button" class="btn btn-primary btn-block btn-lg" disabled>
+			{% endif %}
+				<i class="fas fa-arrow-left"></i>
+			</button>
+		</td>
+		<td class="p-0" colspan="5">
+			<span class="align-middle">{{ month_text }} - {{ year }}</span>
+		</td>
+		<td class="p-0">
+			<button type="button" class="btn btn-primary btn-block btn-lg" onclick="Sijax.request('next', [{{ year }}, {{ month }}])">
+				<i class="fas fa-arrow-right"></i>
+			</button>
+		</td>
+	</tr>
+	<tr>
+		<th scope="col">Dom</th>
+		<th scope="col">Seg</th>
+		<th scope="col">Ter</th>
+		<th scope="col">Qua</th>
+		<th scope="col">Qui</th>
+		<th scope="col">Sex</th>
+		<th scope="col">Sáb</th>
+	</tr>
+	{% for week in day_array %}
+	<tr>
+		{% for day in week %}
+			{% include calendar_inner %}
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
