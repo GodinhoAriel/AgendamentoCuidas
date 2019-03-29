@@ -6,10 +6,12 @@
 	<p>Email: {{ email }}</p>
 	<p>Telefone: {{ phone }}</p>
 </div>
-<div id='calendar'>
-	{% include 'calendar.html' %}
-</div>
-<div id='schedules'>
+<div class="row">
+	<div class="col-md-6" id='calendar'>
+		{% include 'calendar.html' %}
+	</div>
+	<div class="col-md-6" id='schedules'>
 
+	</div>
 </div>
 {% endblock content %}

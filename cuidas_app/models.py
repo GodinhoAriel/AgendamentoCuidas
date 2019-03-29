@@ -6,13 +6,7 @@ from enum import Enum
 
 @login_manager.user_loader
 def load_user(user_id):
-	user = db.users.find_one({
-		'_id': ObjectId(user_id)
-	})
-	if(user):
-		return User(user['_id'], user['email'])
-
-	return None
+	return User.get_by_id(user_id)
 
 class User(UserMixin):
 	def __init__(self, id, email=None, active=True):
@@ -22,6 +16,25 @@ class User(UserMixin):
 
 	def get_id(self): 
 		return self.id
+
+	@staticmethod
+	def get_by_id(user_id):
+		user = db.users.find_one({
+			'_id': ObjectId(user_id)
+		})
+		if(user):
+			return User(user['_id'], user['email'])
+		return None
+
+	@staticmethod
+	def get_by_email(email):
+		user = db.users.find_one({
+			'email': email
+		})
+		if(user):
+			return User(user['_id'], user['email'])
+		return None
+
 
 class ScheduleStatus(Enum):
 	AVAILABLE = 1

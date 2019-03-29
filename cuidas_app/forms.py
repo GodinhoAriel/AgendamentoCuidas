@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
@@ -12,5 +12,5 @@ class LoginForm(FlaskForm):
 class AgendamentoForm(FlaskForm):
     name = StringField('Nome', validators=[DataRequired(), Length(min=10)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    phone = StringField('Telefone', validators=[DataRequired()])
+    phone = IntegerField('Telefone', validators=[DataRequired()])
     submit = SubmitField('Próximo')

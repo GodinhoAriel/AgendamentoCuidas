@@ -1,10 +1,12 @@
 {% extends 'layout.html' %}
 {% block content %}
 <legend class="border-bottom mb-4">Administração</legend>
-<div id='calendar'>
-	{% include 'calendar.html' %}
-</div>
-<div id='schedules'>
+<div class="row">
+	<div class="col-md-5" id='calendar'>
+		{% include 'calendar.html' %}
+	</div>
+	<div class="col-md-7" id='schedules'>
 
+	</div>
 </div>
 {% endblock %} 
