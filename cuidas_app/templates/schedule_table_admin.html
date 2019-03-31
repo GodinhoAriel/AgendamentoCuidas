@@ -10,21 +10,21 @@
 	</thead>
 	<tbody>
 		{% for schedule in selected_day.schedules %}
-			{% if schedule.available() %}
+			{% if schedule.is_available() %}
 				<tr class="table-success">
-			{% elif schedule.assigned() %}
+			{% elif schedule.is_assigned() %}
 				<tr class="table-warning">
 			{% else %}
 				<tr class="table-default">
 			{% endif %}
 				<td class="p-0">{{ schedule.time_str() }}</td>
-				<td class="p-0">{% if schedule.assigned() %} {{ schedule.name }} {% endif %}</td>
-				<td class="p-0">{% if schedule.assigned() %} {{ schedule.email }} {% endif %}</td>
-				<td class="p-0">{% if schedule.assigned() %} {{ schedule.phone }} {% endif %}</td>
-				{% if schedule.available() %}
+				<td class="p-0">{% if schedule.is_assigned() %} {{ schedule.name }} {% endif %}</td>
+				<td class="p-0">{% if schedule.is_assigned() %} {{ schedule.email }} {% endif %}</td>
+				<td class="p-0">{% if schedule.is_assigned() %} {{ schedule.phone }} {% endif %}</td>
+				{% if schedule.is_available() %}
 					<td class="p-0"><button type="button" class="btn btn-sm btn-light" disabled>Habilitar</button></td>
 					<td class="p-0"><button type="button" class="btn btn-sm btn-danger"onclick="Sijax.request('remove_schedule', [{{ selected_day.year }}, {{ selected_day.month }}, {{ selected_day.day }}, {{ schedule.hour }}, {{ schedule.minute }}])">Remover</button></td>
-				{% elif schedule.assigned() %}
+				{% elif schedule.is_assigned() %}
 					<td class="p-0"><button type="button" class="btn btn-sm btn-light" disabled>Habilitar</button></td>
 					<td class="p-0"><button type="button" class="btn btn-sm btn-danger"onclick="Sijax.request('remove_schedule', [{{ selected_day.year }}, {{ selected_day.month }}, {{ selected_day.day }}, {{ schedule.hour }}, {{ schedule.minute }}])">Remover</button></td>
 				{% else %}

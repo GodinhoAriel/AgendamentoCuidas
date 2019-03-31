@@ -1,9 +1,9 @@
 from flask import render_template, url_for, flash, redirect, session
 from flask_login import login_user, current_user, logout_user, login_required
-from cuidas_app import app, db, bcrypt, flask_sijax, g, path
+from cuidas_app import app, bcrypt, flask_sijax, g
 from cuidas_app.forms import LoginForm, AgendamentoForm
 from cuidas_app.models import User, CalendarDay, Schedule, ScheduleStatus
-from cuidas_app.handlers import CalendarHandler, AdminCalendarHandler, get_calendar, get_day_objects, month_names
+from cuidas_app.handlers import CalendarHandler, AdminCalendarHandler, get_calendar, month_names
 import datetime
 
 
@@ -39,7 +39,7 @@ def agendamento_calendario():
 		year=year,
 		month=month,
 		is_previous_month_available=not(year == now.year and month == now.month),
-		day_objects=get_day_objects(year, month))
+		day_objects=CalendarDay.get_calendar_month(year, month))
 
 
 @flask_sijax.route(app, "/agendamento/sucesso")
@@ -52,13 +52,14 @@ def agendamento_sucesso():
 		schedule=session['schedule'])
 	
 @flask_sijax.route(app, "/admin")
+@login_required
 def admin():	
+	if not current_user.is_authenticated:
+		return redirect(url_for('login'))
+
 	if g.sijax.is_sijax_request:
 		g.sijax.register_object(AdminCalendarHandler)
 		return g.sijax.process_request()
-
-	if not current_user.is_authenticated:
-		return redirect(url_for('login'))
 
 	now = datetime.datetime.now()
 	year = now.year
@@ -71,7 +72,7 @@ def admin():
 		year=year,
 		month=month,
 		is_previous_month_available=not(year == now.year and month == now.month),
-		day_objects=get_day_objects(year, month))
+		day_objects=CalendarDay.get_calendar_month(year, month))
 
 @app.route("/admin/login", methods=['GET', 'POST'])
 def login():
@@ -80,12 +81,10 @@ def login():
 	
 	form = LoginForm()
 	if form.validate_on_submit():
-		user = db.users.find_one({
-			'email': form.email.data
-		})
-		if user and bcrypt.check_password_hash(user['hash'], form.password.data):
-			user_obj = User(user['_id'], user['email'])
-			result = login_user(user_obj, remember=form.remember.data)
+		user = User.get_by_email(form.email.data)
+		# Checar se o usuário existe e seo hash é compatível com a senha
+		if user and bcrypt.check_password_hash(user.hash, form.password.data):
+			result = login_user(user, remember=form.remember.data)
 			flash('Você se autenticou com sucesso!', 'success')
 			return redirect(url_for('admin'))
 		else:
@@ -97,8 +96,3 @@ def login():
 def logout():
 	logout_user()
 	return redirect(url_for('login'))
-
-@app.route("/admin/view")
-@login_required
-def listar():
-	return render_template('admin.html', title='Admin')

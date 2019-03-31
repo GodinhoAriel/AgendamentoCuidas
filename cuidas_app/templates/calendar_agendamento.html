@@ -1,6 +1,6 @@
 <td class="p-0">
 	{% if day != 0 %}
-		{% if day_objects[day-1].available() %}
+		{% if day_objects[day-1].is_available() %}
 			<button type="button" class="btn btn-success btn-lg btn-block" onclick="Sijax.request('show_schedules', [{{ year }}, {{ month }}, {{ day }}])">
 		{% else %}
 			<button type="button" class="btn btn-outline-secondary btn-lg btn-block" disabled>
